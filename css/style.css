@@ -1,0 +1,23 @@
+body{
+    padding: 50px;
+}
+.container{
+    height: 680px;
+    
+}
+.niveles{
+    
+    text-align: center;
+    
+}
+
+.containerPreguntas{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    
+}
+.btn_r{
+    margin-bottom: 10px;
+}
