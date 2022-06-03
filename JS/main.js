@@ -5,11 +5,16 @@
  const container = document.querySelector('.container');
  let puntaje =parseInt(localStorage.getItem('puntaje')) 
  let nivelIndicador = 35
+
+
  const nivel = {
      nivel: 1
  }
 
-
+/**
+ * SI EL PUNTAJE INICIAL EN EL LOCAL NO EXISTE SE CREA Y SE PONE EN CERO, ESTO ES CUANDO EL USUARIO ENTRA POR PRIMERA 
+ * VEZ
+ */
  if( puntaje == null){
      localStorage.setItem('puntaje',0)
     puntaje = parseInt(localStorage.getItem('puntaje')) 
@@ -17,10 +22,15 @@
  
 
 
-
+//TODO EN ESTA CLASE MANEJAMOS EL CONTROL DE LO VISUAL EN EL PROGRAMA
 
  export class UI {
 
+    //TODO SE REALIZA LA ACTUALIZACIÓN DE LAS PREGUNTAS 
+    /**
+     * 
+     * @param {*} btn SE RECIBE UN BOOLEAN PARA VERIFICAR SI SE CONTINUA AL SIGUIENTE NIVEL O SE REINICIA EL JUEGO
+     */
     static cambioPreguntas(btn){
         UI.cambiarDisplay(btn);
         UI.cambiarcolor(5)
@@ -35,7 +45,12 @@
      btn_d.textContent = respuestas[4];
 
     }
-
+    /**
+     * SE CAMBIA EL COLOR SELECCIONADO POR EL USUARIO
+     * @param {*} r BOOLEAN PARA VER SI LA RESPUESTA ES CORRECTA O INCORRECTA
+     * @param {*} btn BIENE EL NUMERO DEL BOTON QUE EL USUARIO A PRESIONADO
+     * @param {*} correctA BIENE EL NUMERO DE LA RESPUESTA CORRECTA
+     */
      static cambiarcolor(r, btn, correcta) {
          if (r) {
 
@@ -91,6 +106,11 @@
          }
      }
 
+     /**
+      * MOSTRAMOS AL CLIENTE LA RESPUESTA CORRECTA CUANDO ESTE ELIGE LA INCORRECTA
+      * @param {*} correcta TRAE EL NUMERO DE LA RESPUESTA CORRECTA
+      */
+
      static mostrarCorrecta(correcta){
         switch (correcta) {
             case 1:
@@ -113,6 +133,10 @@
         }
 
      }
+     /**
+      * CAMBIAMOS EL DYSPLAY DE LOS BOTONES PARA OCULTARLOS O MOSTRARLOS
+      * @param {*} btn BOOLEAN QUE NOS DICE CUAL DE LOS DOS BOTNES ES SI EL DE SIGUIENTE O DE REINICIAR
+      */
      static cambiarDisplay(btn) {
 
          if (btn) {
@@ -131,12 +155,22 @@
          }
      }
 
+     /**
+      * RETORNAMOS LA PREGUNTA QUE SE MUESTRA EN PANTALLA
+      * @param {*} pregunta EL OBJETO QUE CONTIENE LA PREGUNTA QUE SE MOSTRARÁ EN PANTALLA
+      * @returns 
+      */
      static mostrarPregunta(pregunta) {
          return pregunta.pregunta
 
      }
 
 
+     /**
+      * RECORREMOS TODOS LOS NIVELES PARA PODER MOSTRARLOS EN PANTALLA
+      * @param {*} niveles UN ARREGLO DE TODOS LOS NIVELES
+      * @returns 
+      */
 
      static recorrerNiveles(niveles) {
          const contenedorPreguntas = document.createElement('div');
@@ -159,6 +193,10 @@
          return contenedorPreguntas
 
      }
+     /**
+      * MUEVE EL INDICADOR DE NIVEL DE ARRIBA Y ABAJO
+      * @param {*} e UN BOOLEAN PARA COMPROBAR SI CONTINUA AL SIGUIENTE NIVEL O SE REINICIA
+      */
 
      static moverIndicador(e){
         if(e){
@@ -172,8 +210,14 @@
 
 
  }
+ //TODO EN ESTA CLASE CONTROLAMOS TODOS LOS DATOS DE NUESTRO JUEGO
 
  export class Datos {
+
+    /**
+     * 
+     * @returns RETORNA UNA PREGINTA ALEATORIA
+     */
      static elegirpregunta() {
          const nivelPreguntas = this.traerpreguntas()
          let numero = Math.floor((Math.random() * ((Object.keys(preguntas[0].nivel1).length - 1) - 0 + 1)) + 0)
@@ -191,15 +235,30 @@
 
          }
      }
+     /**
+      * 
+      * @returns RETORNA LAS PREGUNTAS DEPENDIENDO EL NIVEL
+      */
      static traerpreguntas() {
 
          if (nivel.nivel == 1) {
              return preguntas[0].nivel1
 
-         } else {
+         } else if(nivel.nivel == 2) {
              return preguntas[0].nivel2
-         }
+         }else if(nivel.nivel == 3) {
+            return preguntas[0].nivel3
+        }else if(nivel.nivel == 4) {
+            return preguntas[0].nivel4
+        }else if(nivel.nivel == 5) {
+            return preguntas[0].nivel5
+        }
      }
+
+     /**
+      * VERIFICA SI LA RESPUESTA ES CORRECTA 
+      * @param {*} respuesta TRAE LA RESPUESTA DEL USUARIO
+      */
 
      static comprobarRespuesta(respuesta) {
          const correcta = Object.values(preguntaActual)[5]
@@ -209,7 +268,10 @@
              UI.cambiarcolor(false, respuesta, correcta);
          }
      }
-
+     
+     /**
+      * SUMA EL PUNTAJE GENERAL
+      */
      static sumarPuntaje(){
          puntaje+=5
          localStorage.setItem('puntaje', puntaje)
@@ -218,9 +280,9 @@
 
 
      }
-     static restaurarjuego (){
-         
-     }
+    /**
+     * REINICIA EL PUNTAJE TOTAL
+     */
 
      static restarPuntaje(){
         localStorage.setItem('puntaje', 0)
@@ -230,7 +292,7 @@
 
      
  }
-
+//TODO CREAMOS TODOS LOS ELEMENTOS DEL DOOM
 
  const divNiveles = document.createElement('div');
  const divPregunta = document.createElement('div');
@@ -286,9 +348,11 @@ containerUsuario.className = 'col-12 card border-info mb-3 containerPuntaje'
 
 
 
+//TODO TENEMOS LOS EVENTOS DE LOS BOTONES
 
-
-
+/**
+ * BOTONES DE A, B , C, D 
+ */
  btn_a.addEventListener('click', (e) => {
      Datos.comprobarRespuesta(1)
  });
@@ -304,6 +368,10 @@ containerUsuario.className = 'col-12 card border-info mb-3 containerPuntaje'
  btn_d.addEventListener('click', (e) => {
      Datos.comprobarRespuesta(4)
  });
+
+ /**
+  * BOTON QUE CONTINUA A LA SIGUIENTE PREGUNTA
+  */
 
  btn_siguiente.addEventListener('click', (e) => {
 
@@ -322,6 +390,9 @@ containerUsuario.className = 'col-12 card border-info mb-3 containerPuntaje'
      }
  })
 
+ /**
+  * BOTON QUE REINICIA EL JUEGO
+  */
  btn_nuevo_intento.addEventListener('click', (e)=>{
 
      nivel.nivel = 1
@@ -330,6 +401,4 @@ containerUsuario.className = 'col-12 card border-info mb-3 containerPuntaje'
      Datos.restarPuntaje()
 
  })
- /*  btn_b.addEventListener('click',  Datos.comprobarRespuesta(2) );
-  btn_c.addEventListener('click', Datos.comprobarRespuesta(3) );
-  btn_d.addEventListener('click', Datos.comprobarRespuesta(4) );  */
+ 
