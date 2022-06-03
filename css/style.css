@@ -21,3 +21,18 @@ body{
 .btn_r{
     margin-bottom: 10px;
 }
+.containerPuntaje{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.indicador{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: aqua;
+    position: relative;
+    top: 35px;
+    left: 60px;
+    transition: all 0.5s;
+}
